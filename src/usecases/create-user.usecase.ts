@@ -45,7 +45,6 @@ export class CreateUserUseCase {
     } = data;
 
     if (
-      birthDate === undefined ||
       document === undefined ||
       email === undefined ||
       interestArea === undefined ||

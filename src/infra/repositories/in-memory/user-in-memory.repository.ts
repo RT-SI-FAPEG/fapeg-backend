@@ -1,10 +1,13 @@
 import { User } from "../../../entities/user.entity";
 import { IFindUserByEmailRepository } from "../../../usecases/ports/find-user-by-email.repository";
-import { IListUsers } from "../../../usecases/ports/list-users.repository";
+import { IListUsersRepository } from "../../../usecases/ports/list-users.repository";
 import { ISaveUserRepository } from "../../../usecases/ports/save-user.repository";
 
 export class UserRepositoryInMemory
-  implements IFindUserByEmailRepository, ISaveUserRepository, IListUsers
+  implements
+    IFindUserByEmailRepository,
+    ISaveUserRepository,
+    IListUsersRepository
 {
   private users: User[];
   static instance: UserRepositoryInMemory;

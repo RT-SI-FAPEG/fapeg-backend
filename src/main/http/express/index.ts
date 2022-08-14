@@ -1,21 +1,18 @@
-import "express-async-errors";
-import express, {
-  Request,
-  Response,
-  NextFunction,
-  ErrorRequestHandler,
-} from "express";
 import cors from "cors";
+import express, { NextFunction, Request, Response } from "express";
+import "express-async-errors";
 import { CreateUserController } from "../../../adapters/controllers/create-user.controller";
-import { CreateUserUseCase } from "../../../usecases/create-user.usecase";
+import { ListUsersController } from "../../../adapters/controllers/list-users.controller";
 import { CNPJValidator } from "../../../infra/cnpj-validator";
 import { CPFValidator } from "../../../infra/cpf-validator";
 import { EmailValidator } from "../../../infra/email-validator";
-import { UserRepositoryInMemory } from "../../../infra/repositories/in-memory/user-in-memory.repository";
 import { PasswordHasher } from "../../../infra/password-hasher";
 import { PasswordValidator } from "../../../infra/passwordValidator";
+import { UserRepositoryInMemory } from "../../../infra/repositories/in-memory/user-in-memory.repository";
 import { SendMail } from "../../../infra/send-mail";
 import { AppError } from "../../../shared/errors/AppError";
+import { CreateUserUseCase } from "../../../usecases/create-user.usecase";
+import { ListUsersUseCase } from "../../../usecases/list-users.usecase";
 
 const app = express();
 
@@ -50,8 +47,12 @@ app.post("/user", async (req, res) => {
 });
 
 app.get("/user", async (req, res) => {
-  const users = await userRepositoryInMemory.listUsers();
-  return res.json(users);
+  const listUsersUseCase = new ListUsersUseCase({
+    listUsersRepository: userRepositoryInMemory,
+  });
+  const listUsersController = new ListUsersController(listUsersUseCase);
+  const { statusCode, body } = await listUsersController.handle();
+  return res.status(statusCode).json(body);
 });
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {

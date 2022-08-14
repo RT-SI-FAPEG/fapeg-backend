@@ -1,5 +1,5 @@
 import { User } from "../../entities/user.entity";
 
-export interface IListUsers {
+export interface IListUsersRepository {
   listUsers(): Promise<User[]>;
 }

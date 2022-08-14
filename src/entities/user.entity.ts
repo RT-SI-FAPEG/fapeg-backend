@@ -1,9 +1,6 @@
 import { randomUUID } from "crypto";
 
-export enum TypePerson {
-  FISICA = 1,
-  JURIDICA = 2,
-}
+export type TypePerson = 1 | 2;
 
 interface UserProps {
   id?: string;
@@ -13,7 +10,7 @@ interface UserProps {
   document: string;
   birthDate?: Date;
   interestArea: string;
-  typePerson: TypePerson;
+  typePerson: number;
 }
 
 export class User {
@@ -28,6 +25,10 @@ export class User {
 
   get email(): string {
     return this.props.email;
+  }
+
+  get password(): string {
+    return this.props.password;
   }
 
   toJSON() {
