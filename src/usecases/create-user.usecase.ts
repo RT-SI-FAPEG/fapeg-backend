@@ -82,7 +82,7 @@ export class CreateUserUseCase {
       email,
       interestArea,
       name,
-      password,
+      password: this.props.passwordHasher.encrypt(password),
       typePerson,
     });
 

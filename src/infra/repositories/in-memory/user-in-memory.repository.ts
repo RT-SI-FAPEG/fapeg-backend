@@ -21,14 +21,14 @@ export class UserRepositoryInMemory
   }
 
   async updatePassword(userId: string, password: string): Promise<void> {
-    const index = this.users.findIndex(user => user.id === userId)
-    if(index) {
-      this.users[index].password = password
+    const index = this.users.findIndex((user) => user.id === userId);
+    if (index) {
+      this.users[index].password = password;
     }
   }
 
   async findUserById(id: string): Promise<User | undefined> {
-    return this.users.find(user => user.id === id)
+    return this.users.find((user) => user.id === id);
   }
 
   async listUsers(): Promise<User[]> {
@@ -45,9 +45,12 @@ export class UserRepositoryInMemory
 
   async saveUserRepository(user: User): Promise<void> {
     this.users.push(user);
+    console.log(this.users);
   }
 
   async findUserByEmail(email: string): Promise<User | undefined> {
-    return this.users.find((user) => user.email === email);
+    const user = this.users.find((user) => user.email === email);
+    console.log(user);
+    return user;
   }
 }

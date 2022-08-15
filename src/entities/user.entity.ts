@@ -17,6 +17,12 @@ export class User {
   private props: UserProps;
 
   constructor(props: UserProps) {
+    if (!props) {
+      //@ts-expect-error used for ORM
+      this.props = {};
+      return;
+    }
+
     this.props = {
       ...props,
       id: props.id || randomUUID(),
