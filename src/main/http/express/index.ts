@@ -3,16 +3,20 @@ import express, { NextFunction, Request, Response } from "express";
 import "express-async-errors";
 import { CreateUserController } from "../../../adapters/controllers/create-user.controller";
 import { ListUsersController } from "../../../adapters/controllers/list-users.controller";
+import { ResetPasswordController } from "../../../adapters/controllers/reset-password.controller";
 import { CNPJValidator } from "../../../infra/cnpj-validator";
 import { CPFValidator } from "../../../infra/cpf-validator";
 import { EmailValidator } from "../../../infra/email-validator";
+import { JwtDecoder } from "../../../infra/jwt-decoder";
+import { PasswordComparer } from "../../../infra/password-comparer";
 import { PasswordHasher } from "../../../infra/password-hasher";
-import { PasswordValidator } from "../../../infra/passwordValidator";
+import { PasswordValidator } from "../../../infra/password-validator";
 import { UserRepositoryInMemory } from "../../../infra/repositories/in-memory/user-in-memory.repository";
 import { SendMail } from "../../../infra/send-mail";
 import { AppError } from "../../../shared/errors/AppError";
 import { CreateUserUseCase } from "../../../usecases/create-user.usecase";
 import { ListUsersUseCase } from "../../../usecases/list-users.usecase";
+import { ResetPasswordUseCase } from "../../../usecases/reset-password.usecase";
 
 const app = express();
 
@@ -26,6 +30,8 @@ const userRepositoryInMemory = UserRepositoryInMemory.getInstance();
 const passwordHasher = new PasswordHasher();
 const passwordValidator = new PasswordValidator();
 const sendMail = new SendMail();
+const jwtDecoder = new JwtDecoder();
+const passwordComparer = new PasswordComparer();
 
 app.post("/user", async (req, res) => {
   const createUserUseCase = new CreateUserUseCase({
@@ -54,6 +60,17 @@ app.get("/user", async (req, res) => {
   const { statusCode, body } = await listUsersController.handle();
   return res.status(statusCode).json(body);
 });
+
+app.put("/user/password", (req, res) => {
+  const resetPasswordUseCase = new ResetPasswordUseCase({
+    findUserByIdRepository: userRepositoryInMemory,
+    jwtDecoder,
+    passwordHasher, 
+    passwordComparer,
+    updateUserPasswordRepository: userRepositoryInMemory
+  })
+  const resetPasswordController = new ResetPasswordController(resetPasswordUseCase);
+})
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof AppError) {

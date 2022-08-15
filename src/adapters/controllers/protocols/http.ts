@@ -1,10 +1,10 @@
 export interface HttpRequest {
   body?: any;
-  header?: any;
+  headers?: any;
 }
 
 export interface HttpResponse {
   body?: any;
-  header?: any;
+  headers?: any;
   statusCode: number;
 }

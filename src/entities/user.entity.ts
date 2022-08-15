@@ -23,12 +23,20 @@ export class User {
     };
   }
 
+  get id() {
+    return this.props.id;
+  }
+
   get email(): string {
     return this.props.email;
   }
 
   get password(): string {
     return this.props.password;
+  }
+
+  set password(password: string) {
+    this.props.password = password;
   }
 
   toJSON() {

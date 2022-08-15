@@ -1,0 +1,1 @@
+export const jwtKey = "7be31221bc34731d5b578612abdfc24f"
