@@ -20,6 +20,9 @@ import { AuthUserUseCase } from "../../../usecases/auth-user.usecase";
 import { CreateUserUseCase } from "../../../usecases/create-user.usecase";
 import { ListUsersUseCase } from "../../../usecases/list-users.usecase";
 import { ResetPasswordUseCase } from "../../../usecases/reset-password.usecase";
+import { ListSearchesController } from "../../../adapters/controllers/list-searches.controller";
+import { ListSearchesUseCase } from "../../../usecases/list-searches.usecase";
+import { CsvConverter } from "../../../infra/csv-converter";
 
 const app = express();
 
@@ -36,6 +39,7 @@ const sendMail = new SendMail();
 const jwtDecoder = new JwtDecoder();
 const passwordComparer = new PasswordComparer();
 const jwtCreator = new JwtCreator();
+const csvConverter = new CsvConverter();
 
 app.post("/user", async (req, res) => {
   const createUserUseCase = new CreateUserUseCase({
@@ -90,6 +94,17 @@ app.post("/auth", async (req, res) => {
   const authUserController = new AuthUserController(authUserUseCase);
 
   const result = await authUserController.handle(req);
+  return res.status(result.statusCode).json(result.body);
+});
+
+app.get("/searches", async (req, res) => {
+  const listSearchesUseCase = new ListSearchesUseCase({
+    csvConverter,
+  });
+  const listSearchesController = new ListSearchesController(
+    listSearchesUseCase
+  );
+  const result = await listSearchesController.handle();
   return res.status(result.statusCode).json(result.body);
 });
 
