@@ -20,23 +20,24 @@ export class AuthUserUseCase {
   constructor(private props: AuthUserProps) {}
 
   async execute({ email, password }: AuthUserDTO) {
-    if (!email || !password) throw new AppError("All fields are required");
+    if (!email || !password)
+      throw new AppError("E-mail e senha são obrigatórios");
 
     if (!this.props.emailValidator.validate(email))
-      throw new AppError("Invalid Email Address");
+      throw new AppError("Endereço de e-mail inválido");
 
     const user = await this.props.findUserByEmailRepository.findUserByEmail(
       email
     );
 
-    if (!user) throw new AppError("User not finded");
+    if (!user) throw new AppError("E-mail ou senha inválidos");
 
     if (!this.props.passwordComparer.compare(password, user.password))
-      throw new AppError("Invalid user password");
+      throw new AppError("E-mail ou senha inválidos");
 
     const token = this.props.jwtCreator.create({
       exp: "1d",
-      sub: user.id || "",
+      sub: user.id,
     });
 
     return {

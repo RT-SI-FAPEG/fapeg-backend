@@ -46,29 +46,38 @@ export class CreateUserUseCase {
       typePerson,
     } = data;
 
-    if (
-      document === undefined ||
-      email === undefined ||
-      name === undefined ||
-      password === undefined
-    )
-      throw new AppError("All fields are required");
+    if (document === undefined)
+      throw new AppError("Campo documento é obrigatório");
+
+    if (name === undefined) throw new AppError("Campo nome é obrigatório");
+
+    if (email === undefined) throw new AppError("Campo e-mail é obrigatório");
+
+    if (password === undefined) throw new AppError("Campo senha é obrigatório");
+
+    if (birthDate === undefined)
+      throw new AppError("Campo data de nascimento é obrigatório");
+
+    if (typePerson === undefined)
+      throw new AppError("Campo tipo de usuário é obrigatório");
 
     if (!this.props.emailValidator.validate(email))
-      throw new AppError("Invalid Email");
+      throw new AppError("Endereço de e-mail inválido");
 
     if (!this.props.passwordValidator.validate(password))
-      throw new AppError("Invalid Password");
+      throw new AppError("Senha inválida");
 
     if (!this.props.cpfValidator.validate(document))
-      throw new AppError("Invalid Password");
+      throw new AppError("Formato de CPF inválido");
 
-    if (name.length < 3) throw new AppError("Invalid Name");
+    if (name.length < 3)
+      throw new AppError("Nome inválido: deve possuir pelo menos 3 caracteres");
 
     const userAlreadyExists =
       await this.props.findUserRepository.findUserByEmail(email);
 
-    if (userAlreadyExists) throw new AppError("User already exists");
+    if (userAlreadyExists)
+      throw new AppError("Usuário já cadastrado em nossa base de dados");
 
     const user = new User({
       birthDate,
