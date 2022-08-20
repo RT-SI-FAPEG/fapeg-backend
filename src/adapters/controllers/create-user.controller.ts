@@ -8,21 +8,25 @@ export class CreateUserController {
     const {
       document,
       email,
-      interestArea,
       name,
       password,
       typePerson,
       birthDate,
+      course,
+      educationalInstitution,
+      educationLevel,
     } = request.body;
 
     await this.createUserUseCase.exec({
       document,
       email,
-      interestArea,
       name,
       password,
       typePerson,
       birthDate,
+      course,
+      educationalInstitution,
+      educationLevel,
     });
 
     return {

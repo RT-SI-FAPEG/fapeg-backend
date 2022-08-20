@@ -1,22 +1,37 @@
 import { randomUUID } from "crypto";
 
-export type TypePerson = 1 | 2;
+export type TypePerson = "1" | "2";
 
-interface UserProps {
+interface UserDTO {
   id?: string;
   name: string;
+  birthDate: string;
   email: string;
-  password: string;
   document: string;
-  birthDate?: Date;
-  interestArea: string;
-  typePerson: number;
+  password: string;
+  educationLevel?: string;
+  educationalInstitution?: string;
+  course?: string;
+  typePerson: TypePerson;
+}
+
+interface UserProps {
+  id: string;
+  name: string;
+  birthDate: string;
+  email: string;
+  document: string;
+  password: string;
+  educationLevel?: string;
+  educationalInstitution?: string;
+  course?: string;
+  typePerson: TypePerson;
 }
 
 export class User {
   private props: UserProps;
 
-  constructor(props: UserProps) {
+  constructor(props: UserDTO) {
     if (!props) {
       //@ts-expect-error used for ORM
       this.props = {};

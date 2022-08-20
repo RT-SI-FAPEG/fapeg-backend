@@ -5,7 +5,6 @@ import { AuthUserController } from "../../../adapters/controllers/auth-user.cont
 import { CreateUserController } from "../../../adapters/controllers/create-user.controller";
 import { ListUsersController } from "../../../adapters/controllers/list-users.controller";
 import { ResetPasswordController } from "../../../adapters/controllers/reset-password.controller";
-import { CNPJValidator } from "../../../infra/cnpj-validator";
 import { CPFValidator } from "../../../infra/cpf-validator";
 import { EmailValidator } from "../../../infra/email-validator";
 import { JwtCreator } from "../../../infra/jwt-creator";
@@ -29,7 +28,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const cnpjValidator = new CNPJValidator();
 const cpfValidator = new CPFValidator();
 const emailValidator = new EmailValidator();
 const userRepositoryInMemory = UserRepositoryInMemory.getInstance();
@@ -43,7 +41,6 @@ const csvConverter = new CsvConverter();
 
 app.post("/user", async (req, res) => {
   const createUserUseCase = new CreateUserUseCase({
-    cnpjValidator,
     cpfValidator,
     emailValidator,
     findUserRepository: userRepositoryInMemory,

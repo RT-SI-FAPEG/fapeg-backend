@@ -1,6 +1,5 @@
 import { TypePerson, User } from "../entities/user.entity";
 import { AppError } from "../shared/errors/AppError";
-import { ICNPJValidator } from "./ports/cnpj-validator";
 import { ICPFValidator } from "./ports/cpf-validator";
 import { IFindUserByEmailRepository } from "./ports/find-user-by-email.repository";
 import { IPasswordHasher } from "./ports/password-hasher";
@@ -9,13 +8,15 @@ import { ISaveUserRepository } from "./ports/save-user.repository";
 import { ISendMail } from "./ports/send-mail";
 import { IEmailValidator } from "./ports/user-validator";
 
-interface CreateUserDTO {
+export interface CreateUserDTO {
   name: string;
+  birthDate: string;
   email: string;
-  password: string;
   document: string;
-  birthDate?: Date;
-  interestArea: string;
+  password: string;
+  educationLevel?: string;
+  educationalInstitution?: string;
+  course?: string;
   typePerson: TypePerson;
 }
 
@@ -27,7 +28,6 @@ interface CreateUserProps {
   findUserRepository: IFindUserByEmailRepository;
   saveUserRepository: ISaveUserRepository;
   cpfValidator: ICPFValidator;
-  cnpjValidator: ICNPJValidator;
 }
 
 export class CreateUserUseCase {
@@ -38,19 +38,19 @@ export class CreateUserUseCase {
       birthDate,
       document,
       email,
-      interestArea,
       name,
       password,
+      course,
+      educationLevel,
+      educationalInstitution,
       typePerson,
     } = data;
 
     if (
       document === undefined ||
       email === undefined ||
-      interestArea === undefined ||
       name === undefined ||
-      password === undefined ||
-      typePerson === undefined
+      password === undefined
     )
       throw new AppError("All fields are required");
 
@@ -60,16 +60,10 @@ export class CreateUserUseCase {
     if (!this.props.passwordValidator.validate(password))
       throw new AppError("Invalid Password");
 
-    if (typePerson === 1 && !birthDate)
-      throw new AppError("Birth Date is a required field");
+    if (!this.props.cpfValidator.validate(document))
+      throw new AppError("Invalid Password");
 
     if (name.length < 3) throw new AppError("Invalid Name");
-
-    if (typePerson === 1 && !this.props.cpfValidator.validate(document))
-      throw new AppError("Invalid Document");
-
-    if (typePerson === 2 && !this.props.cnpjValidator.validate(document))
-      throw new AppError("Invalid Document");
 
     const userAlreadyExists =
       await this.props.findUserRepository.findUserByEmail(email);
@@ -80,10 +74,12 @@ export class CreateUserUseCase {
       birthDate,
       document,
       email,
-      interestArea,
       name,
       password: this.props.passwordHasher.encrypt(password),
       typePerson,
+      course,
+      educationLevel,
+      educationalInstitution,
     });
 
     await this.props.saveUserRepository.saveUserRepository(user);

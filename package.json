@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "ts-node-dev ./src/main/http/express/index.ts",
     "build": "tsc --build",
-    "start": "node ./dist/main/http/express/index.js"
+    "start": "node ./dist/main/http/express/index.js",
+    "test": "jest --watch",
+    "test:cov": "jest --coverage"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
