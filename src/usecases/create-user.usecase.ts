@@ -7,6 +7,7 @@ import { IPasswordValidator } from "./ports/password-validator";
 import { ISaveUserRepository } from "./ports/save-user.repository";
 import { ISendMail } from "./ports/send-mail";
 import { IEmailValidator } from "./ports/user-validator";
+import { IDateValidate } from "./ports/validate-date";
 
 export interface CreateUserDTO {
   name: string;
@@ -28,6 +29,7 @@ interface CreateUserProps {
   findUserRepository: IFindUserByEmailRepository;
   saveUserRepository: ISaveUserRepository;
   cpfValidator: ICPFValidator;
+  dateValidator: IDateValidate;
 }
 
 export class CreateUserUseCase {
@@ -65,10 +67,13 @@ export class CreateUserUseCase {
       throw new AppError("Endereço de e-mail inválido");
 
     if (!this.props.passwordValidator.validate(password))
-      throw new AppError("Senha inválida");
+      throw new AppError("Formato de senha inválido");
 
     if (!this.props.cpfValidator.validate(document))
       throw new AppError("Formato de CPF inválido");
+
+    if (!this.props.dateValidator.validate(birthDate))
+      throw new AppError("Data de nascimento inválida");
 
     if (name.length < 3)
       throw new AppError("Nome inválido: deve possuir pelo menos 3 caracteres");

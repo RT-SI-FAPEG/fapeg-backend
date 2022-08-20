@@ -22,6 +22,7 @@ import { ResetPasswordUseCase } from "../../../usecases/reset-password.usecase";
 import { ListSearchesController } from "../../../adapters/controllers/list-searches.controller";
 import { ListSearchesUseCase } from "../../../usecases/list-searches.usecase";
 import { CsvConverter } from "../../../infra/csv-converter";
+import { DateValidator } from "../../../infra/date-validator";
 
 const app = express();
 
@@ -38,6 +39,7 @@ const jwtDecoder = new JwtDecoder();
 const passwordComparer = new PasswordComparer();
 const jwtCreator = new JwtCreator();
 const csvConverter = new CsvConverter();
+const dateValidator = new DateValidator();
 
 app.post("/user", async (req, res) => {
   const createUserUseCase = new CreateUserUseCase({
@@ -48,6 +50,7 @@ app.post("/user", async (req, res) => {
     passwordValidator,
     saveUserRepository: userRepositoryInMemory,
     sendMail,
+    dateValidator,
   });
 
   const createUserController = new CreateUserController(createUserUseCase);
