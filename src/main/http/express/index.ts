@@ -23,6 +23,8 @@ import { ListSearchesController } from "../../../adapters/controllers/list-searc
 import { ListSearchesUseCase } from "../../../usecases/list-searches.usecase";
 import { CsvConverter } from "../../../infra/csv-converter";
 import { DateValidator } from "../../../infra/date-validator";
+import { ListIndicatorsUseCase } from "../../../usecases/list-indicators.usecase";
+import { ListIndicatorsController } from "../../../adapters/controllers/list-indicators.controller";
 
 const app = express();
 
@@ -105,6 +107,15 @@ app.get("/searches", async (req, res) => {
     listSearchesUseCase
   );
   const result = await listSearchesController.handle();
+  return res.status(result.statusCode).json(result.body);
+});
+
+app.get("/indicators", async (req, res) => {
+  const listIndicatorsUseCase = new ListIndicatorsUseCase();
+  const listIndicatorsController = new ListIndicatorsController(
+    listIndicatorsUseCase
+  );
+  const result = await listIndicatorsController.handle();
   return res.status(result.statusCode).json(result.body);
 });
 
