@@ -29,7 +29,11 @@ import { ListIndicatorsController } from "../../../adapters/controllers/list-ind
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://fapeg-frontend.herokuapp.com",
+  })
+);
 
 const cpfValidator = new CPFValidator();
 const emailValidator = new EmailValidator();
