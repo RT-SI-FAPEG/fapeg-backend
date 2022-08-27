@@ -1,4 +1,5 @@
 import "express-async-errors";
+import "reflect-metadata";
 import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
 import { AuthUserController } from "../../../adapters/controllers/auth-user.controller";
@@ -25,15 +26,12 @@ import { CsvConverter } from "../../../infra/csv-converter";
 import { DateValidator } from "../../../infra/date-validator";
 import { ListIndicatorsUseCase } from "../../../usecases/list-indicators.usecase";
 import { ListIndicatorsController } from "../../../adapters/controllers/list-indicators.controller";
+import { AppDataSource } from "../../../database";
 
 const app = express();
 
 app.use(express.json());
-app.use(
-  cors({
-    origin: "https://fapeg-frontend.herokuapp.com",
-  })
-);
+app.use(cors());
 
 const cpfValidator = new CPFValidator();
 const emailValidator = new EmailValidator();
@@ -137,4 +135,8 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 
 app.listen(process.env.PORT || 3333, () => {
   console.log("server is running");
+
+  AppDataSource.initialize().then(() =>
+    console.log("database connection stabilished")
+  );
 });
