@@ -2,6 +2,7 @@ import { Repository } from "typeorm";
 import { AppDataSource } from "../../../database";
 import { UserEntity } from "../../../database/entities/User";
 import { User } from "../../../entities/user.entity";
+import { IFindUserByDocument } from "../../../usecases/ports/find-user-by-document.repository";
 import { IFindUserByEmailRepository } from "../../../usecases/ports/find-user-by-email.repository";
 import { IFindUserByIdRepository } from "../../../usecases/ports/find-user-by-id.repository";
 import { IListUsersRepository } from "../../../usecases/ports/list-users.repository";
@@ -14,12 +15,21 @@ export class UserRepositoryTypeorm
     ISaveUserRepository,
     IListUsersRepository,
     IFindUserByIdRepository,
-    IUpdateUserPasswordRepository
+    IUpdateUserPasswordRepository,
+    IFindUserByDocument
 {
   private repository: Repository<User>;
 
   constructor() {
     this.repository = AppDataSource.getRepository(UserEntity);
+  }
+
+  async findUserByDocument(document: string): Promise<User | undefined> {
+    const user = await this.repository.findOneBy({
+      document,
+    });
+
+    return user || undefined;
   }
 
   async updatePassword(userId: string, password: string): Promise<void> {

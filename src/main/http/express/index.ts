@@ -36,7 +36,7 @@ app.use(cors());
 
 const cpfValidator = new CPFValidator();
 const emailValidator = new EmailValidator();
-const userRepositoryInMemory = new UserRepositoryTypeorm();
+const userRepository = new UserRepositoryTypeorm();
 const passwordHasher = new PasswordHasher();
 const passwordValidator = new PasswordValidator();
 const sendMail = new SendMail();
@@ -50,12 +50,13 @@ app.post("/user", async (req, res) => {
   const createUserUseCase = new CreateUserUseCase({
     cpfValidator,
     emailValidator,
-    findUserRepository: userRepositoryInMemory,
+    findUserRepository: userRepository,
     passwordHasher,
     passwordValidator,
-    saveUserRepository: userRepositoryInMemory,
+    saveUserRepository: userRepository,
     sendMail,
     dateValidator,
+    findUserByDocument: userRepository,
   });
 
   const createUserController = new CreateUserController(createUserUseCase);
@@ -67,7 +68,7 @@ app.post("/user", async (req, res) => {
 
 // app.get("/user", AuthMiddleware, async (req, res) => {
 //   const listUsersUseCase = new ListUsersUseCase({
-//     listUsersRepository: userRepositoryInMemory,
+//     listUsersRepository: userRepository,
 //   });
 //   const listUsersController = new ListUsersController(listUsersUseCase);
 //   const { statusCode, body } = await listUsersController.handle();
@@ -77,11 +78,11 @@ app.post("/user", async (req, res) => {
 // Recuperação de senha
 app.put("/user/password", async (req, res) => {
   const resetPasswordUseCase = new ResetPasswordUseCase({
-    findUserByIdRepository: userRepositoryInMemory,
+    findUserByIdRepository: userRepository,
     jwtDecoder,
     passwordHasher,
     passwordComparer,
-    updateUserPasswordRepository: userRepositoryInMemory,
+    updateUserPasswordRepository: userRepository,
     passwordValidator,
   });
   const resetPasswordController = new ResetPasswordController(
@@ -95,7 +96,7 @@ app.put("/user/password", async (req, res) => {
 app.post("/auth", async (req, res) => {
   const authUserUseCase = new AuthUserUseCase({
     emailValidator,
-    findUserByEmailRepository: userRepositoryInMemory,
+    findUserByEmailRepository: userRepository,
     jwtCreator,
     passwordComparer,
   });

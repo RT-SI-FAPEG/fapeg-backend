@@ -2,6 +2,7 @@ import { TypePerson, User } from "../../../entities/user.entity";
 import { CreateUserDTO, CreateUserUseCase } from "../../create-user.usecase";
 import { cpfValidatorMock } from "../../mocks/cpf-validator.mock";
 import { emailValidatorMock } from "../../mocks/email-validator.mock";
+import { findUserByDocumentRepositoryMock } from "../../mocks/find-user-by-document-repository.mock";
 import { findUserByEmailRepositoryMock } from "../../mocks/find-user-by-email-repository.mock";
 import { passwordHasherMock } from "../../mocks/password-hasher.mock";
 import { passwordValidatorMock } from "../../mocks/password-validator.mock";
@@ -31,6 +32,7 @@ function makeSut() {
     saveUserRepository: saveUserRepositoryMock,
     sendMail: sendMailMock,
     dateValidator: dateValidatorMock,
+    findUserByDocument: findUserByDocumentRepositoryMock,
   });
 
   return { createUserUseCase };

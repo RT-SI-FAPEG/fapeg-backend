@@ -1,6 +1,7 @@
 import { TypePerson, User } from "../entities/user.entity";
 import { AppError } from "../shared/errors/AppError";
 import { ICPFValidator } from "./ports/cpf-validator";
+import { IFindUserByDocument } from "./ports/find-user-by-document.repository";
 import { IFindUserByEmailRepository } from "./ports/find-user-by-email.repository";
 import { IPasswordHasher } from "./ports/password-hasher";
 import { IPasswordValidator } from "./ports/password-validator";
@@ -30,6 +31,7 @@ interface CreateUserProps {
   saveUserRepository: ISaveUserRepository;
   cpfValidator: ICPFValidator;
   dateValidator: IDateValidate;
+  findUserByDocument: IFindUserByDocument;
 }
 
 export class CreateUserUseCase {
@@ -78,11 +80,21 @@ export class CreateUserUseCase {
     if (name.length < 3)
       throw new AppError("Nome inválido: deve possuir pelo menos 3 caracteres");
 
-    const userAlreadyExists =
+    const userAlreadyExistsWithEmailAddress =
       await this.props.findUserRepository.findUserByEmail(email);
 
-    if (userAlreadyExists)
-      throw new AppError("Usuário já cadastrado em nossa base de dados");
+    if (userAlreadyExistsWithEmailAddress)
+      throw new AppError(
+        "Usuário já cadastrado em nossa base de dados com este endereço de e-mail"
+      );
+
+    const userAlreadyExistsWithDocument =
+      await this.props.findUserByDocument.findUserByDocument(document);
+
+    if (userAlreadyExistsWithDocument)
+      throw new AppError(
+        "Usuário já cadastrado em nossa base de dados com este documento"
+      );
 
     const user = new User({
       birthDate,
