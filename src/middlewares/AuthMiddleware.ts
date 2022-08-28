@@ -22,7 +22,7 @@ export function AuthMiddleware(
   try {
     jwt.verify(token, jwtKey);
   } catch (error) {
-    return res.status(400).json({ error: "Token JWT inválido" });
+    return res.status(401).json({ error: "Token JWT inválido" });
   }
 
   return next();
