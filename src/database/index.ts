@@ -5,7 +5,7 @@ export const AppDataSource = new DataSource({
   type: "sqlite",
   database: "fapeg.db",
   synchronize: false,
-  logging: true,
+  logging: false,
   entities: [UserEntity],
   migrations: ["src/database/migrations/*.ts"],
 });

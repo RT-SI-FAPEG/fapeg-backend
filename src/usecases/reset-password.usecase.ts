@@ -3,6 +3,7 @@ import { AppError } from "../shared/errors/AppError";
 import { IFindUserByIdRepository } from "./ports/find-user-by-id.repository";
 import { IJwtDecoder } from "./ports/jwt-decoder";
 import { IPasswordComparer } from "./ports/password-comparer";
+import { IPasswordValidator } from "./ports/password-validator";
 import { IUpdateUserPasswordRepository } from "./ports/update-user-password.repository";
 
 interface ResetPasswordUseCaseProps {
@@ -11,6 +12,7 @@ interface ResetPasswordUseCaseProps {
   passwordHasher: PasswordHasher;
   findUserByIdRepository: IFindUserByIdRepository;
   updateUserPasswordRepository: IUpdateUserPasswordRepository;
+  passwordValidator: IPasswordValidator;
 }
 
 interface ResetPasswordUseCaseDTO {
@@ -28,12 +30,15 @@ export class ResetPasswordUseCase {
     // verificar se tem o token
     if (!token) throw new AppError("Token é obrigatório");
 
+    // verificar se a nova senha é válida
+    const isValidNewPassword =
+      this.props.passwordValidator.validate(newPassword);
+
+    if (!isValidNewPassword)
+      throw new AppError("Nova senha possui formato inválido");
+
     // verificar se o token não está expirado
-    const { iat, sub } = this.props.jwtDecoder.decode(token);
-
-    const expirationTime = new Date(iat).getTime();
-
-    if (expirationTime < Date.now()) throw new AppError("Token expirado");
+    const { exp, sub } = this.props.jwtDecoder.decode(token);
 
     // verificar se o usuário existe
     const user = await this.props.findUserByIdRepository.findUserById(sub);

@@ -22,16 +22,34 @@ export class UserRepositoryTypeorm
     this.repository = AppDataSource.getRepository(UserEntity);
   }
 
-  updatePassword(userId: string, password: string): Promise<void> {
-    throw new Error("Method not implemented.");
+  async updatePassword(userId: string, password: string): Promise<void> {
+    this.repository.update(
+      { id: userId },
+      {
+        password,
+      }
+    );
   }
 
-  findUserById(id: string): Promise<User | undefined> {
-    throw new Error("Method not implemented.");
+  async findUserById(id: string): Promise<User | undefined> {
+    const user = await this.repository.findOneBy({ id });
+    return user || undefined;
   }
 
-  listUsers(): Promise<User[]> {
-    throw new Error("Method not implemented.");
+  async listUsers(): Promise<User[]> {
+    return this.repository.find({
+      select: [
+        "birthDate",
+        "course",
+        "document",
+        "educationLevel",
+        "educationalInstitution",
+        "email",
+        "id",
+        "name",
+        "typePerson",
+      ],
+    });
   }
 
   async findUserByEmail(email: string): Promise<User | undefined> {

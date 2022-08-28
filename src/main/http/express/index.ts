@@ -22,12 +22,12 @@ import { ListUsersUseCase } from "../../../usecases/list-users.usecase";
 import { ResetPasswordUseCase } from "../../../usecases/reset-password.usecase";
 import { ListSearchesController } from "../../../adapters/controllers/list-searches.controller";
 import { ListSearchesUseCase } from "../../../usecases/list-searches.usecase";
-import { CsvConverter } from "../../../infra/csv-converter";
 import { DateValidator } from "../../../infra/date-validator";
 import { ListIndicatorsUseCase } from "../../../usecases/list-indicators.usecase";
 import { ListIndicatorsController } from "../../../adapters/controllers/list-indicators.controller";
 import { AppDataSource } from "../../../database";
 import { UserRepositoryTypeorm } from "../../../infra/repositories/typeorm/user-typeorm.repository";
+import { AuthMiddleware } from "../../../middlewares/AuthMiddleware";
 
 const app = express();
 
@@ -36,25 +36,24 @@ app.use(cors());
 
 const cpfValidator = new CPFValidator();
 const emailValidator = new EmailValidator();
-const userRepositoryInMemory = UserRepositoryInMemory.getInstance();
+const userRepositoryInMemory = new UserRepositoryTypeorm();
 const passwordHasher = new PasswordHasher();
 const passwordValidator = new PasswordValidator();
 const sendMail = new SendMail();
 const jwtDecoder = new JwtDecoder();
 const passwordComparer = new PasswordComparer();
 const jwtCreator = new JwtCreator();
-const csvConverter = new CsvConverter();
 const dateValidator = new DateValidator();
 
+// Criação de novo usuário
 app.post("/user", async (req, res) => {
-  const userRepository = new UserRepositoryTypeorm();
   const createUserUseCase = new CreateUserUseCase({
     cpfValidator,
     emailValidator,
-    findUserRepository: userRepository,
+    findUserRepository: userRepositoryInMemory,
     passwordHasher,
     passwordValidator,
-    saveUserRepository: userRepository,
+    saveUserRepository: userRepositoryInMemory,
     sendMail,
     dateValidator,
   });
@@ -66,15 +65,16 @@ app.post("/user", async (req, res) => {
   return res.status(statusCode).send();
 });
 
-app.get("/user", async (req, res) => {
-  const listUsersUseCase = new ListUsersUseCase({
-    listUsersRepository: userRepositoryInMemory,
-  });
-  const listUsersController = new ListUsersController(listUsersUseCase);
-  const { statusCode, body } = await listUsersController.handle();
-  return res.status(statusCode).json(body);
-});
+// app.get("/user", AuthMiddleware, async (req, res) => {
+//   const listUsersUseCase = new ListUsersUseCase({
+//     listUsersRepository: userRepositoryInMemory,
+//   });
+//   const listUsersController = new ListUsersController(listUsersUseCase);
+//   const { statusCode, body } = await listUsersController.handle();
+//   return res.status(statusCode).json(body);
+// });
 
+// Recuperação de senha
 app.put("/user/password", async (req, res) => {
   const resetPasswordUseCase = new ResetPasswordUseCase({
     findUserByIdRepository: userRepositoryInMemory,
@@ -82,6 +82,7 @@ app.put("/user/password", async (req, res) => {
     passwordHasher,
     passwordComparer,
     updateUserPasswordRepository: userRepositoryInMemory,
+    passwordValidator,
   });
   const resetPasswordController = new ResetPasswordController(
     resetPasswordUseCase
@@ -90,6 +91,7 @@ app.put("/user/password", async (req, res) => {
   return res.status(result.statusCode).send("");
 });
 
+// Autenticação de usuário
 app.post("/auth", async (req, res) => {
   const authUserUseCase = new AuthUserUseCase({
     emailValidator,
@@ -103,16 +105,21 @@ app.post("/auth", async (req, res) => {
   return res.status(result.statusCode).json(result.body);
 });
 
-app.get("/searches", async (req, res) => {
+// Listagem de pesquisas
+app.get("/searches", AuthMiddleware, async (req, res) => {
   const listSearchesUseCase = new ListSearchesUseCase();
+
   const listSearchesController = new ListSearchesController(
     listSearchesUseCase
   );
+
   const result = await listSearchesController.handle();
+
   return res.status(result.statusCode).json(result.body);
 });
 
-app.get("/indicators", async (req, res) => {
+// Listagem de indicadores
+app.get("/indicators", AuthMiddleware, async (req, res) => {
   const listIndicatorsUseCase = new ListIndicatorsUseCase();
   const listIndicatorsController = new ListIndicatorsController(
     listIndicatorsUseCase
