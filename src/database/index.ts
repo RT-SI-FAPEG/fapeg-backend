@@ -1,11 +1,11 @@
 import { DataSource } from "typeorm";
-import { Data } from "../entities/teste";
+import { UserEntity } from "./entities/User";
 
 export const AppDataSource = new DataSource({
   type: "sqlite",
-  database: "fapeg",
+  database: "fapeg.db",
   synchronize: false,
   logging: true,
-  entities: [Data],
+  entities: [UserEntity],
   migrations: ["src/database/migrations/*.ts"],
 });

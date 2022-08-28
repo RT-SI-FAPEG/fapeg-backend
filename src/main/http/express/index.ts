@@ -27,6 +27,7 @@ import { DateValidator } from "../../../infra/date-validator";
 import { ListIndicatorsUseCase } from "../../../usecases/list-indicators.usecase";
 import { ListIndicatorsController } from "../../../adapters/controllers/list-indicators.controller";
 import { AppDataSource } from "../../../database";
+import { UserRepositoryTypeorm } from "../../../infra/repositories/typeorm/user-typeorm.repository";
 
 const app = express();
 
@@ -46,13 +47,14 @@ const csvConverter = new CsvConverter();
 const dateValidator = new DateValidator();
 
 app.post("/user", async (req, res) => {
+  const userRepository = new UserRepositoryTypeorm();
   const createUserUseCase = new CreateUserUseCase({
     cpfValidator,
     emailValidator,
-    findUserRepository: userRepositoryInMemory,
+    findUserRepository: userRepository,
     passwordHasher,
     passwordValidator,
-    saveUserRepository: userRepositoryInMemory,
+    saveUserRepository: userRepository,
     sendMail,
     dateValidator,
   });
@@ -102,9 +104,7 @@ app.post("/auth", async (req, res) => {
 });
 
 app.get("/searches", async (req, res) => {
-  const listSearchesUseCase = new ListSearchesUseCase({
-    csvConverter,
-  });
+  const listSearchesUseCase = new ListSearchesUseCase();
   const listSearchesController = new ListSearchesController(
     listSearchesUseCase
   );
