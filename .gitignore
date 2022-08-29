@@ -2,3 +2,4 @@ node_modules
 dist
 cov
 .DS_Store
+coverage

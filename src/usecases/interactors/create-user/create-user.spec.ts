@@ -241,7 +241,7 @@ describe("Create User Use Case", () => {
     }).rejects.toThrow("Formato de senha inválido");
   });
 
-  it("Should throws if user already exists", () => {
+  it("Should throws if user already exists with e-mail address", () => {
     const { createUserUseCase } = makeSut();
 
     expect(async () => {
@@ -254,11 +254,36 @@ describe("Create User Use Case", () => {
         typePerson: "1",
       };
 
-      findUserByEmailRepositoryMock.findUserByEmail.mockResolvedValue(
+      findUserByEmailRepositoryMock.findUserByEmail.mockResolvedValueOnce(
         {} as User
       );
 
       await createUserUseCase.exec(data as CreateUserDTO);
-    }).rejects.toThrow("Usuário já cadastrado em nossa base de dados");
+    }).rejects.toThrow(
+      "Usuário já cadastrado em nossa base de dados com este endereço de e-mail"
+    );
+  });
+
+  it("Should throws if user already exists with document", () => {
+    const { createUserUseCase } = makeSut();
+
+    expect(async () => {
+      const data: IncomingData = {
+        birthDate: "any_birthDate",
+        document: "any_document",
+        email: "any_email",
+        name: "any_name",
+        password: "any_password",
+        typePerson: "1",
+      };
+
+      findUserByDocumentRepositoryMock.findUserByDocument.mockResolvedValueOnce(
+        {} as User
+      );
+
+      await createUserUseCase.exec(data as CreateUserDTO);
+    }).rejects.toThrow(
+      "Usuário já cadastrado em nossa base de dados com este documento"
+    );
   });
 });

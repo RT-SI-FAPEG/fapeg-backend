@@ -114,7 +114,7 @@ app.get("/searches", AuthMiddleware, async (req, res) => {
     listSearchesUseCase
   );
 
-  const result = await listSearchesController.handle();
+  const result = await listSearchesController.handle(req);
 
   return res.status(result.statusCode).json(result.body);
 });
