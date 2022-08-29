@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { jwtKey } from "../shared/constants/jwt-key";
+import { jwtKey } from "../../../../shared/constants/jwt-key";
 
 export function AuthMiddleware(
   req: Request,
