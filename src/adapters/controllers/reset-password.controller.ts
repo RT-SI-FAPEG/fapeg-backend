@@ -1,4 +1,4 @@
-import { ResetPasswordUseCase } from "../../usecases/reset-password.usecase";
+import { ResetPasswordUseCase } from "../../usecases/interactors/reset-password.usecase";
 import { HttpRequest, HttpResponse } from "./protocols/http";
 
 export class ResetPasswordController {

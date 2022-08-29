@@ -1,8 +1,8 @@
-import { AppError } from "../shared/errors/AppError";
-import { IFindUserByEmailRepository } from "./ports/find-user-by-email.repository";
-import { IJwtCreator } from "./ports/jwt-creator";
-import { IPasswordComparer } from "./ports/password-comparer";
-import { IEmailValidator } from "./ports/user-validator";
+import { AppError } from "../../shared/errors/AppError";
+import { IFindUserByEmailRepository } from "../ports/find-user-by-email.repository";
+import { IJwtCreator } from "../ports/jwt-creator";
+import { IPasswordComparer } from "../ports/password-comparer";
+import { IEmailValidator } from "../ports/user-validator";
 
 interface AuthUserDTO {
   email: string;

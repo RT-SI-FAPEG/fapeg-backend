@@ -1,5 +1,5 @@
-import dadosOpp from "../../dados_opp.json";
-import { AppError } from "../shared/errors/AppError";
+import dadosOpp from "../../../dados_opp.json";
+import { AppError } from "../../shared/errors/AppError";
 
 interface ListSearchesUseCaseDTO {
   page?: number;

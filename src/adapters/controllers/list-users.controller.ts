@@ -1,4 +1,4 @@
-import { ListUsersUseCase } from "../../usecases/list-users.usecase";
+import { ListUsersUseCase } from "../../usecases/interactors/list-users.usecase";
 import { HttpResponse } from "./protocols/http";
 
 export class ListUsersController {

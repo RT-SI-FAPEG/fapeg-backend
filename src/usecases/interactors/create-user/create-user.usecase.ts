@@ -1,14 +1,14 @@
-import { TypePerson, User } from "../entities/user.entity";
-import { AppError } from "../shared/errors/AppError";
-import { ICPFValidator } from "./ports/cpf-validator";
-import { IFindUserByDocument } from "./ports/find-user-by-document.repository";
-import { IFindUserByEmailRepository } from "./ports/find-user-by-email.repository";
-import { IPasswordHasher } from "./ports/password-hasher";
-import { IPasswordValidator } from "./ports/password-validator";
-import { ISaveUserRepository } from "./ports/save-user.repository";
-import { ISendMail } from "./ports/send-mail";
-import { IEmailValidator } from "./ports/user-validator";
-import { IDateValidate } from "./ports/validate-date";
+import { TypePerson, User } from "../../../entities/user.entity";
+import { AppError } from "../../../shared/errors/AppError";
+import { ICPFValidator } from "../../ports/cpf-validator";
+import { IFindUserByDocument } from "../../ports/find-user-by-document.repository";
+import { IFindUserByEmailRepository } from "../../ports/find-user-by-email.repository";
+import { IPasswordHasher } from "../../ports/password-hasher";
+import { IPasswordValidator } from "../../ports/password-validator";
+import { ISaveUserRepository } from "../../ports/save-user.repository";
+import { ISendMail } from "../../ports/send-mail";
+import { IEmailValidator } from "../../ports/user-validator";
+import { IDateValidate } from "../../ports/validate-date";
 
 export interface CreateUserDTO {
   name: string;

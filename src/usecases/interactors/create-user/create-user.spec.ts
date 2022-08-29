@@ -1,5 +1,5 @@
 import { TypePerson, User } from "../../../entities/user.entity";
-import { CreateUserDTO, CreateUserUseCase } from "../../create-user.usecase";
+import { CreateUserDTO, CreateUserUseCase } from "./create-user.usecase";
 import { cpfValidatorMock } from "../../mocks/cpf-validator.mock";
 import { emailValidatorMock } from "../../mocks/email-validator.mock";
 import { findUserByDocumentRepositoryMock } from "../../mocks/find-user-by-document-repository.mock";

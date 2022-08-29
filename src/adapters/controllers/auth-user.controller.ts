@@ -1,4 +1,4 @@
-import { AuthUserUseCase } from "../../usecases/auth-user.usecase";
+import { AuthUserUseCase } from "../../usecases/interactors/auth-user.usecase";
 import { HttpRequest, HttpResponse } from "./protocols/http";
 
 export class AuthUserController {

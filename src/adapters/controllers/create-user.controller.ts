@@ -1,4 +1,4 @@
-import { CreateUserUseCase } from "../../usecases/create-user.usecase";
+import { CreateUserUseCase } from "../../usecases/interactors/create-user/create-user.usecase";
 import { HttpRequest, HttpResponse } from "./protocols/http";
 
 export class CreateUserController {
