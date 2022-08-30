@@ -7,6 +7,7 @@ import { IFindUserByEmailRepository } from "../../../usecases/ports/find-user-by
 import { IFindUserByIdRepository } from "../../../usecases/ports/find-user-by-id.repository";
 import { IListUsersRepository } from "../../../usecases/ports/list-users.repository";
 import { ISaveUserRepository } from "../../../usecases/ports/save-user.repository";
+import { IUpdateUserRepository } from "../../../usecases/ports/udpate-user.repository";
 import { IUpdateUserPasswordRepository } from "../../../usecases/ports/update-user-password.repository";
 
 export class UserRepositoryTypeorm
@@ -16,12 +17,18 @@ export class UserRepositoryTypeorm
     IListUsersRepository,
     IFindUserByIdRepository,
     IUpdateUserPasswordRepository,
-    IFindUserByDocument
+    IFindUserByDocument,
+    IUpdateUserRepository
 {
   private repository: Repository<User>;
 
   constructor() {
     this.repository = AppDataSource.getRepository(UserEntity);
+  }
+
+  async updateUser(userId: string, user: User): Promise<User> {
+    await this.repository.update({ id: userId }, user.toJSON());
+    return user;
   }
 
   async findUserByDocument(document: string): Promise<User | undefined> {

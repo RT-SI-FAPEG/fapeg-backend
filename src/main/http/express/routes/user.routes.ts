@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { CreateUserController } from "../../../../adapters/controllers/create-user.controller";
 import { ResetPasswordController } from "../../../../adapters/controllers/reset-password.controller";
+import { UpdateUserController } from "../../../../adapters/controllers/update-user.controller";
 import { CPFValidator } from "../../../../infra/cpf-validator";
 import { DateValidator } from "../../../../infra/date-validator";
 import { EmailValidator } from "../../../../infra/email-validator";
@@ -12,6 +13,7 @@ import { UserRepositoryTypeorm } from "../../../../infra/repositories/typeorm/us
 import { SendMail } from "../../../../infra/send-mail";
 import { CreateUserUseCase } from "../../../../usecases/interactors/create-user/create-user.usecase";
 import { ResetPasswordUseCase } from "../../../../usecases/interactors/reset-password.usecase";
+import { UpdateUserUseCase } from "../../../../usecases/interactors/update-user.usecase";
 
 export const userRoutes = Router();
 
@@ -69,5 +71,25 @@ userRoutes.put("/user/password", async (req, res) => {
     resetPasswordUseCase
   );
   const result = await resetPasswordController.handle(req);
+  return res.status(result.statusCode).send("");
+});
+
+// Update de dados
+userRoutes.put("/user", async (req, res) => {
+  const updateUserUseCase = new UpdateUserUseCase({
+    cpfValidator,
+    dateValidator,
+    emailValidator,
+    findUserByDocument: userRepository,
+    findUserById: userRepository,
+    findUserRepository: userRepository,
+    saveUserRepository: userRepository,
+    updateUserRepository: userRepository,
+  });
+
+  const updateUserController = new UpdateUserController(updateUserUseCase);
+
+  const result = await updateUserController.handle(req);
+
   return res.status(result.statusCode).send("");
 });
