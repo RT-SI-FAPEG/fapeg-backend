@@ -42,6 +42,7 @@ export class AuthUserUseCase {
 
     return {
       token,
+      id: user.id,
     };
   }
 }
