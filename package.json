@@ -4,12 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev ./src/main/http/express/index.ts",
+    "dev": "NODE_ENV=dev ts-node-dev ./src/main/http/express/index.ts",
     "build": "tsc --build",
     "start": "node ./dist/src/main/http/express/index.js",
     "test": "jest --watch",
     "test:cov": "jest --coverage",
-    "typeorm": "typeorm-ts-node-esm"
+    "typeorm": "typeorm-ts-node-esm",
+    "test:e2e": "jest --"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -20,6 +21,7 @@
     "@types/node": "^18.7.13",
     "@types/validator": "^13.7.5",
     "jest": "^28.1.3",
+    "supertest": "^6.2.4",
     "ts-jest": "^28.0.7",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
