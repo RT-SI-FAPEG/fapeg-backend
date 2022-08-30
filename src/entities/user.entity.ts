@@ -72,6 +72,18 @@ export class User {
     return this.props.typePerson;
   }
 
+  get educationLevel() {
+    return this.props.educationLevel || "";
+  }
+
+  get educationalInstitution() {
+    return this.props.educationalInstitution || "";
+  }
+
+  get course() {
+    return this.props.course || "";
+  }
+
   set password(password: string) {
     this.props.password = password;
   }
