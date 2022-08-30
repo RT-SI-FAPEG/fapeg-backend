@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { CreateUserController } from "../../../../adapters/controllers/create-user.controller";
+import { GetUserDataController } from "../../../../adapters/controllers/get-user-data.controller";
 import { ResetPasswordController } from "../../../../adapters/controllers/reset-password.controller";
 import { UpdateUserController } from "../../../../adapters/controllers/update-user.controller";
 import { CPFValidator } from "../../../../infra/cpf-validator";
@@ -12,8 +13,10 @@ import { PasswordValidator } from "../../../../infra/password-validator";
 import { UserRepositoryTypeorm } from "../../../../infra/repositories/typeorm/user-typeorm.repository";
 import { SendMail } from "../../../../infra/send-mail";
 import { CreateUserUseCase } from "../../../../usecases/interactors/create-user/create-user.usecase";
+import { GetUserDataUseCase } from "../../../../usecases/interactors/get-user-data.usecase";
 import { ResetPasswordUseCase } from "../../../../usecases/interactors/reset-password.usecase";
 import { UpdateUserUseCase } from "../../../../usecases/interactors/update-user.usecase";
+import { AuthMiddleware } from "../middlewares/AuthMiddleware";
 
 export const userRoutes = Router();
 
@@ -57,6 +60,15 @@ userRoutes.post("/user", async (req, res) => {
 //   return res.status(statusCode).json(body);
 // });
 
+userRoutes.get("/user/:id", AuthMiddleware, async (req, res) => {
+  const getUserDataUseCase = new GetUserDataUseCase({
+    findUserByIdRepository: userRepository,
+  });
+  const getUserDataController = new GetUserDataController(getUserDataUseCase);
+  const { statusCode, body } = await getUserDataController.handle(req);
+  return res.status(statusCode).json(body);
+});
+
 // Recuperação de senha
 userRoutes.put("/user/password", async (req, res) => {
   const resetPasswordUseCase = new ResetPasswordUseCase({
@@ -75,7 +87,7 @@ userRoutes.put("/user/password", async (req, res) => {
 });
 
 // Update de dados
-userRoutes.put("/user", async (req, res) => {
+userRoutes.put("/user", AuthMiddleware, async (req, res) => {
   const updateUserUseCase = new UpdateUserUseCase({
     cpfValidator,
     dateValidator,
