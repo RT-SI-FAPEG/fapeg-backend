@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 
-export type TypePerson = "1" | "2";
+export type TypePerson = "1" | "2" | "3";
 
 interface UserDTO {
   id?: string;
