@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { CreateUserController } from "../../../../adapters/controllers/create-user.controller";
+import { DeleteUserController } from "../../../../adapters/controllers/delete-user.controller";
 import { GetUserDataController } from "../../../../adapters/controllers/get-user-data.controller";
 import { ResetPasswordController } from "../../../../adapters/controllers/reset-password.controller";
 import { UpdateUserController } from "../../../../adapters/controllers/update-user.controller";
@@ -13,6 +14,7 @@ import { PasswordValidator } from "../../../../infra/password-validator";
 import { UserRepositoryTypeorm } from "../../../../infra/repositories/typeorm/user-typeorm.repository";
 import { SendMail } from "../../../../infra/send-mail";
 import { CreateUserUseCase } from "../../../../usecases/interactors/create-user/create-user.usecase";
+import { DeleteUserUseCase } from "../../../../usecases/interactors/delete-user.usecase";
 import { GetUserDataUseCase } from "../../../../usecases/interactors/get-user-data.usecase";
 import { ResetPasswordUseCase } from "../../../../usecases/interactors/reset-password.usecase";
 import { UpdateUserUseCase } from "../../../../usecases/interactors/update-user.usecase";
@@ -103,5 +105,14 @@ userRoutes.put("/user", AuthMiddleware, async (req, res) => {
 
   const result = await updateUserController.handle(req);
 
+  return res.status(result.statusCode).send("");
+});
+
+userRoutes.delete("/user/:id", AuthMiddleware, async (req, res) => {
+  const deleteUserUseCase = new DeleteUserUseCase({
+    deleteUserRepository: userRepository,
+  });
+  const deleteUserController = new DeleteUserController(deleteUserUseCase);
+  const result = await deleteUserController.handle(req);
   return res.status(result.statusCode).send("");
 });

@@ -2,6 +2,7 @@ import { Repository } from "typeorm";
 import { AppDataSource } from "../../../database";
 import { UserEntity } from "../../../database/entities/User";
 import { User } from "../../../entities/user.entity";
+import { IDeleteUserRepository } from "../../../usecases/ports/delete-user.repository";
 import { IFindUserByDocument } from "../../../usecases/ports/find-user-by-document.repository";
 import { IFindUserByEmailRepository } from "../../../usecases/ports/find-user-by-email.repository";
 import { IFindUserByIdRepository } from "../../../usecases/ports/find-user-by-id.repository";
@@ -18,12 +19,17 @@ export class UserRepositoryTypeorm
     IFindUserByIdRepository,
     IUpdateUserPasswordRepository,
     IFindUserByDocument,
-    IUpdateUserRepository
+    IUpdateUserRepository,
+    IDeleteUserRepository
 {
   private repository: Repository<User>;
 
   constructor() {
     this.repository = AppDataSource.getRepository(UserEntity);
+  }
+
+  async deleteUser(userId: string): Promise<void> {
+    await this.repository.delete(userId);
   }
 
   async updateUser(userId: string, user: User): Promise<User> {
