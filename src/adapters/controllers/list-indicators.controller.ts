@@ -1,4 +1,4 @@
-import { ListIndicatorsUseCase } from "../../usecases/interactors/list-indicators.usecase";
+import { ListIndicatorsUseCase } from "../../usecases/interactors/list-indicators/list-indicators.usecase";
 import { HttpResponse } from "./protocols/http";
 
 export class ListIndicatorsController {

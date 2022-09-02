@@ -42,6 +42,14 @@ describe("Create User Use Case", () => {
   it("Should be able to create a new user", async () => {
     const { createUserUseCase } = makeSut();
 
+    findUserByEmailRepositoryMock.findUserByEmail.mockResolvedValueOnce(
+      undefined
+    );
+
+    findUserByDocumentRepositoryMock.findUserByDocument.mockResolvedValueOnce(
+      undefined
+    );
+
     await createUserUseCase.exec({
       birthDate: "2020-12-11",
       document: "any_document",
@@ -205,7 +213,7 @@ describe("Create User Use Case", () => {
     }).rejects.toThrow("Endereço de e-mail inválido");
   });
 
-  it("Should throws if invalid email is provided", () => {
+  it("Should throws if invalid name is provided", () => {
     const { createUserUseCase } = makeSut();
 
     expect(async () => {

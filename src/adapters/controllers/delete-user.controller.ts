@@ -1,4 +1,4 @@
-import { DeleteUserUseCase } from "../../usecases/interactors/delete-user.usecase";
+import { DeleteUserUseCase } from "../../usecases/interactors/delete-user/delete-user.usecase";
 import { HttpRequest, HttpResponse } from "./protocols/http";
 
 export class DeleteUserController {

@@ -1,10 +1,10 @@
-import { PasswordHasher } from "../../infra/password-hasher";
-import { AppError } from "../../shared/errors/AppError";
-import { IFindUserByIdRepository } from "../ports/find-user-by-id.repository";
-import { IJwtDecoder } from "../ports/jwt-decoder";
-import { IPasswordComparer } from "../ports/password-comparer";
-import { IPasswordValidator } from "../ports/password-validator";
-import { IUpdateUserPasswordRepository } from "../ports/update-user-password.repository";
+import { PasswordHasher } from "../../../infra/password-hasher";
+import { AppError } from "../../../shared/errors/AppError";
+import { IFindUserByIdRepository } from "../../ports/find-user-by-id.repository";
+import { IJwtDecoder } from "../../ports/jwt-decoder";
+import { IPasswordComparer } from "../../ports/password-comparer";
+import { IPasswordValidator } from "../../ports/password-validator";
+import { IUpdateUserPasswordRepository } from "../../ports/update-user-password.repository";
 
 interface ResetPasswordUseCaseProps {
   jwtDecoder: IJwtDecoder;

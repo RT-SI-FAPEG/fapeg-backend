@@ -1,4 +1,4 @@
-import { ListSearchesUseCase } from "../../usecases/interactors/list-searches.usecase";
+import { ListSearchesUseCase } from "../../usecases/interactors/list-searches/list-searches.usecase";
 import { HttpRequest, HttpResponse } from "./protocols/http";
 
 export class ListSearchesController {

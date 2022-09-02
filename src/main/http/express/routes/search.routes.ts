@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { ListSearchesController } from "../../../../adapters/controllers/list-searches.controller";
 import { AuthMiddleware } from "../middlewares/AuthMiddleware";
-import { ListSearchesUseCase } from "../../../../usecases/interactors/list-searches.usecase";
+import { ListSearchesUseCase } from "../../../../usecases/interactors/list-searches/list-searches.usecase";
 
 export const searchRoutes = Router();
 

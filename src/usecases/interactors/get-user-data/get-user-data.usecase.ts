@@ -1,5 +1,5 @@
-import { User } from "../../entities/user.entity";
-import { IFindUserByIdRepository } from "../ports/find-user-by-id.repository";
+import { User } from "../../../entities/user.entity";
+import { IFindUserByIdRepository } from "../../ports/find-user-by-id.repository";
 
 interface GetUserDataUseCaseProps {
   findUserByIdRepository: IFindUserByIdRepository;

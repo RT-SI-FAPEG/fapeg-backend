@@ -1,10 +1,10 @@
-import { AppError } from "../../shared/errors/AppError";
-import { IFindUserByEmailRepository } from "../ports/find-user-by-email.repository";
-import { IJwtCreator } from "../ports/jwt-creator";
-import { IPasswordComparer } from "../ports/password-comparer";
-import { IEmailValidator } from "../ports/user-validator";
+import { AppError } from "../../../shared/errors/AppError";
+import { IFindUserByEmailRepository } from "../../ports/find-user-by-email.repository";
+import { IJwtCreator } from "../../ports/jwt-creator";
+import { IPasswordComparer } from "../../ports/password-comparer";
+import { IEmailValidator } from "../../ports/user-validator";
 
-interface AuthUserDTO {
+export interface AuthUserDTO {
   email: string;
   password: string;
 }
@@ -19,7 +19,7 @@ interface AuthUserProps {
 export class AuthUserUseCase {
   constructor(private props: AuthUserProps) {}
 
-  async execute({ email, password }: AuthUserDTO) {
+  async exec({ email, password }: AuthUserDTO) {
     if (!email || !password)
       throw new AppError("E-mail e senha são obrigatórios");
 

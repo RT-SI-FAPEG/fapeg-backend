@@ -1,4 +1,4 @@
-import { AuthUserUseCase } from "../../usecases/interactors/auth-user.usecase";
+import { AuthUserUseCase } from "../../usecases/interactors/auth-user/auth-user.usecase";
 import { HttpRequest, HttpResponse } from "./protocols/http";
 
 export class AuthUserController {
@@ -7,7 +7,7 @@ export class AuthUserController {
   async handle(request: HttpRequest): Promise<HttpResponse> {
     const { email, password } = request.body;
 
-    const result = await this.authUserUseCase.execute({ email, password });
+    const result = await this.authUserUseCase.exec({ email, password });
 
     return {
       statusCode: 200,

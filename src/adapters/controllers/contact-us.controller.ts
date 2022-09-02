@@ -1,4 +1,4 @@
-import { ContactUsUseCase } from "../../usecases/interactors/contact-use.usecase";
+import { ContactUsUseCase } from "../../usecases/interactors/contact-us/contact-us.usecase";
 import { HttpRequest, HttpResponse } from "./protocols/http";
 
 export class ContactUsController {

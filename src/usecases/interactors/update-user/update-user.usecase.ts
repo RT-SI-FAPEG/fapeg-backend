@@ -4,16 +4,16 @@
 // fazer todas as validações para e-mail, documento, data de nascimento, etc
 // fazer o update do usuário no backend (criar repositório para isso)
 
-import { TypePerson, User } from "../../entities/user.entity";
-import { AppError } from "../../shared/errors/AppError";
-import { ICPFValidator } from "../ports/cpf-validator";
-import { IFindUserByDocument } from "../ports/find-user-by-document.repository";
-import { IFindUserByEmailRepository } from "../ports/find-user-by-email.repository";
-import { IFindUserByIdRepository } from "../ports/find-user-by-id.repository";
-import { ISaveUserRepository } from "../ports/save-user.repository";
-import { IUpdateUserRepository } from "../ports/udpate-user.repository";
-import { IEmailValidator } from "../ports/user-validator";
-import { IDateValidate } from "../ports/validate-date";
+import { TypePerson, User } from "../../../entities/user.entity";
+import { AppError } from "../../../shared/errors/AppError";
+import { ICPFValidator } from "../../ports/cpf-validator";
+import { IFindUserByDocument } from "../../ports/find-user-by-document.repository";
+import { IFindUserByEmailRepository } from "../../ports/find-user-by-email.repository";
+import { IFindUserByIdRepository } from "../../ports/find-user-by-id.repository";
+import { ISaveUserRepository } from "../../ports/save-user.repository";
+import { IUpdateUserRepository } from "../../ports/udpate-user.repository";
+import { IEmailValidator } from "../../ports/user-validator";
+import { IDateValidate } from "../../ports/validate-date";
 
 interface UpdateUserUseCaseDTO {
   id: string;

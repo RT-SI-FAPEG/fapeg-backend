@@ -14,10 +14,10 @@ import { PasswordValidator } from "../../../../infra/password-validator";
 import { UserRepositoryTypeorm } from "../../../../infra/repositories/typeorm/user-typeorm.repository";
 import { SendMail } from "../../../../infra/send-mail";
 import { CreateUserUseCase } from "../../../../usecases/interactors/create-user/create-user.usecase";
-import { DeleteUserUseCase } from "../../../../usecases/interactors/delete-user.usecase";
-import { GetUserDataUseCase } from "../../../../usecases/interactors/get-user-data.usecase";
-import { ResetPasswordUseCase } from "../../../../usecases/interactors/reset-password.usecase";
-import { UpdateUserUseCase } from "../../../../usecases/interactors/update-user.usecase";
+import { DeleteUserUseCase } from "../../../../usecases/interactors/delete-user/delete-user.usecase";
+import { GetUserDataUseCase } from "../../../../usecases/interactors/get-user-data/get-user-data.usecase";
+import { ResetPasswordUseCase } from "../../../../usecases/interactors/reset-password/reset-password.usecase";
+import { UpdateUserUseCase } from "../../../../usecases/interactors/update-user/update-user.usecase";
 import { AuthMiddleware } from "../middlewares/AuthMiddleware";
 
 export const userRoutes = Router();
@@ -66,8 +66,11 @@ userRoutes.get("/user/:id", AuthMiddleware, async (req, res) => {
   const getUserDataUseCase = new GetUserDataUseCase({
     findUserByIdRepository: userRepository,
   });
+
   const getUserDataController = new GetUserDataController(getUserDataUseCase);
+
   const { statusCode, body } = await getUserDataController.handle(req);
+
   return res.status(statusCode).json(body);
 });
 
@@ -81,10 +84,13 @@ userRoutes.put("/user/password", async (req, res) => {
     updateUserPasswordRepository: userRepository,
     passwordValidator,
   });
+
   const resetPasswordController = new ResetPasswordController(
     resetPasswordUseCase
   );
+
   const result = await resetPasswordController.handle(req);
+
   return res.status(result.statusCode).send("");
 });
 
@@ -111,6 +117,7 @@ userRoutes.put("/user", AuthMiddleware, async (req, res) => {
 userRoutes.delete("/user/:id", AuthMiddleware, async (req, res) => {
   const deleteUserUseCase = new DeleteUserUseCase({
     deleteUserRepository: userRepository,
+    findUserByIdRepository: userRepository,
   });
   const deleteUserController = new DeleteUserController(deleteUserUseCase);
   const result = await deleteUserController.handle(req);

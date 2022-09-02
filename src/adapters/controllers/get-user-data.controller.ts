@@ -1,4 +1,4 @@
-import { GetUserDataUseCase } from "../../usecases/interactors/get-user-data.usecase";
+import { GetUserDataUseCase } from "../../usecases/interactors/get-user-data/get-user-data.usecase";
 import { HttpRequest, HttpResponse } from "./protocols/http";
 
 export class GetUserDataController {

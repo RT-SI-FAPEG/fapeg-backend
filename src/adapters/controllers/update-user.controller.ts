@@ -1,4 +1,4 @@
-import { UpdateUserUseCase } from "../../usecases/interactors/update-user.usecase";
+import { UpdateUserUseCase } from "../../usecases/interactors/update-user/update-user.usecase";
 import { HttpRequest, HttpResponse } from "./protocols/http";
 
 export class UpdateUserController {

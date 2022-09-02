@@ -1,4 +1,4 @@
-import { IListUsersRepository } from "../ports/list-users.repository";
+import { IListUsersRepository } from "../../ports/list-users.repository";
 
 interface ListUsersUseCaseProps {
   listUsersRepository: IListUsersRepository;
