@@ -8,6 +8,7 @@ import { indicatorsRoutes } from "./routes/indicators.routes";
 import { searchRoutes } from "./routes/search.routes";
 import { userRoutes } from "./routes/user.routes";
 import { contactRoutes } from "./routes/contact.routes";
+import { successStoriesRoutes } from "./routes/success-stories.routes";
 
 export const app = express();
 
@@ -19,6 +20,7 @@ app.use(indicatorsRoutes);
 app.use(searchRoutes);
 app.use(userRoutes);
 app.use(contactRoutes);
+app.use(successStoriesRoutes);
 
 // esse middleware deve vir depois de todas as rotas (tratamento global de exceptions)
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {

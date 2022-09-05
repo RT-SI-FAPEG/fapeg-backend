@@ -1,4 +1,4 @@
-import dadosOpp from "../../../../dados_opp.json";
+import dadosOpp from "../../../../pesquisas_pesquisadores.json";
 import { AppError } from "../../../shared/errors/AppError";
 
 interface ListSearchesUseCaseDTO {

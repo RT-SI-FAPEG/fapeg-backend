@@ -107,7 +107,7 @@ export class UpdateUserUseCase {
     const userToUpdate = new User({
       id,
       birthDate,
-      document,
+      document: user.document,
       email,
       name,
       password: user.password,
