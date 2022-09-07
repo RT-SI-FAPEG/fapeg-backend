@@ -1,3 +1,9 @@
+export interface IDataEmail {
+  to: string;
+  subject: string;
+  text: string;
+}
+
 export interface ISendMail {
-  sendMail(value: string): Promise<void>;
+  sendMail(data: IDataEmail): Promise<void>;
 }

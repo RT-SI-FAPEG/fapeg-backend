@@ -24,6 +24,10 @@ export class ContactUsUseCase {
     if (!this.props.mailValidator.validate(data.email))
       throw new AppError("Endereço de e-mail inválido");
 
-    this.props.sendMail.sendMail(JSON.stringify(data));
+    this.props.sendMail.sendMail({
+      subject: data.subject,
+      text: data.text,
+      to: data.email,
+    });
   }
 }

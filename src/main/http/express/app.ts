@@ -1,5 +1,6 @@
 import "express-async-errors";
 import "reflect-metadata";
+import * as dotenv from "dotenv";
 import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
 import { AppError } from "../../../shared/errors/AppError";
@@ -9,6 +10,8 @@ import { searchRoutes } from "./routes/search.routes";
 import { userRoutes } from "./routes/user.routes";
 import { contactRoutes } from "./routes/contact.routes";
 import { successStoriesRoutes } from "./routes/success-stories.routes";
+
+dotenv.config();
 
 export const app = express();
 

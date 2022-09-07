@@ -110,6 +110,10 @@ export class CreateUserUseCase {
 
     await this.props.saveUserRepository.saveUserRepository(user);
 
-    await this.props.sendMail.sendMail("user created");
+    await this.props.sendMail.sendMail({
+      subject: "Account created",
+      to: user.email,
+      text: "user created",
+    });
   }
 }
