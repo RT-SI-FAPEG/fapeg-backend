@@ -29,6 +29,11 @@ Segue um exemplo da hierarquia das camadas, da esquerda para a direita, temos as
 
 ```infra -> adapters -> usecases -> main```
 
+## Variáveis de ambiente necessárias
+
+* `MAIL_ADDRESS`: Endereço de e-mail a ser utilizado na aplicação (envio de e-mails) 
+* `MAIL_PASSWORD`: Senha do endereço de e-mail
+* `BASE_URL_FRONTEND`: Url do projeto frontend da aplicação
 
 ## Como executar este projeto
 
