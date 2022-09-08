@@ -6,7 +6,7 @@ import { ListSearchesUseCase } from "../../../../usecases/interactors/list-searc
 export const searchRoutes = Router();
 
 // Listagem de pesquisas
-searchRoutes.get("/searches", AuthMiddleware, async (req, res) => {
+searchRoutes.post("/searches", AuthMiddleware, async (req, res) => {
   const listSearchesUseCase = new ListSearchesUseCase();
 
   const listSearchesController = new ListSearchesController(

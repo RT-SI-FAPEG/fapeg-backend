@@ -9,6 +9,7 @@ import { passwordValidatorMock } from "../../mocks/password-validator.mock";
 import { saveUserRepositoryMock } from "../../mocks/save-user-repository.mock";
 import { sendMailMock } from "../../mocks/send-mail.mock";
 import { dateValidatorMock } from "../../mocks/validate-date.mock";
+import { jwtCreatorMock } from "../../mocks/jwt-creator.mock";
 
 interface IncomingData {
   name: string | undefined;
@@ -33,6 +34,7 @@ function makeSut() {
     sendMail: sendMailMock,
     dateValidator: dateValidatorMock,
     findUserByDocument: findUserByDocumentRepositoryMock,
+    tokenGenerator: jwtCreatorMock,
   });
 
   return { createUserUseCase };

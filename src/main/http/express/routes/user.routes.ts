@@ -7,6 +7,7 @@ import { UpdateUserController } from "../../../../adapters/controllers/update-us
 import { CPFValidator } from "../../../../infra/cpf-validator";
 import { DateValidator } from "../../../../infra/date-validator";
 import { EmailValidator } from "../../../../infra/email-validator";
+import { JwtCreator } from "../../../../infra/jwt-creator";
 import { JwtDecoder } from "../../../../infra/jwt-decoder";
 import { PasswordComparer } from "../../../../infra/password-comparer";
 import { PasswordHasher } from "../../../../infra/password-hasher";
@@ -31,6 +32,7 @@ const sendMail = new SendMail();
 const jwtDecoder = new JwtDecoder();
 const passwordComparer = new PasswordComparer();
 const dateValidator = new DateValidator();
+const jwtCreator = new JwtCreator();
 
 // Criação de novo usuário
 userRoutes.post("/user", async (req, res) => {
@@ -44,6 +46,7 @@ userRoutes.post("/user", async (req, res) => {
     sendMail,
     dateValidator,
     findUserByDocument: userRepository,
+    tokenGenerator: jwtCreator,
   });
 
   const createUserController = new CreateUserController(createUserUseCase);

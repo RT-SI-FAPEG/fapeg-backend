@@ -6,10 +6,12 @@ export class ListSearchesController {
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
     const { page, perPage } = request.query;
+    const { filter } = request.body;
 
     const result = await this.listSearchesUseCase.exec({
       page: Number(page),
       perPage: Number(perPage),
+      filter,
     });
 
     return {

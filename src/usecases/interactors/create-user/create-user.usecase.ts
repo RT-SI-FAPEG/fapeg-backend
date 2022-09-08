@@ -1,8 +1,10 @@
 import { TypePerson, User } from "../../../entities/user.entity";
 import { AppError } from "../../../shared/errors/AppError";
+import { createUserMailTemplate } from "../../../shared/utils/mail-templates/create-user.template";
 import { ICPFValidator } from "../../ports/cpf-validator";
 import { IFindUserByDocument } from "../../ports/find-user-by-document.repository";
 import { IFindUserByEmailRepository } from "../../ports/find-user-by-email.repository";
+import { IJwtCreator } from "../../ports/jwt-creator";
 import { IPasswordHasher } from "../../ports/password-hasher";
 import { IPasswordValidator } from "../../ports/password-validator";
 import { ISaveUserRepository } from "../../ports/save-user.repository";
@@ -32,6 +34,7 @@ interface CreateUserProps {
   cpfValidator: ICPFValidator;
   dateValidator: IDateValidate;
   findUserByDocument: IFindUserByDocument;
+  tokenGenerator: IJwtCreator;
 }
 
 export class CreateUserUseCase {
@@ -110,10 +113,19 @@ export class CreateUserUseCase {
 
     await this.props.saveUserRepository.saveUserRepository(user);
 
-    await this.props.sendMail.sendMail({
+    const token = this.props.tokenGenerator.create({
+      exp: "1d",
+      sub: user.id,
+    });
+
+    this.props.sendMail.sendMail({
       subject: "Account created",
       to: user.email,
-      text: "user created",
+      text: createUserMailTemplate({
+        token,
+        mailAddress: user.email,
+        name: user.name,
+      }),
     });
   }
 }
