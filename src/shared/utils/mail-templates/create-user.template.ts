@@ -33,7 +33,7 @@ export const createUserMailTemplate = (props: CreateUserMailTemplateProps) =>
   <tr style="text-align: center">
     <td style="padding: 20px">
       <a
-        href="https://fapeg-frontend.herokuapp.com/login/${props.token}"
+        href="${process.env.BASE_URL_FRONTEND}/login/${props.token}"
         target="_blank"
         rel="noreferrer noopener"
         style="
