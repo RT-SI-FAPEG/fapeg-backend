@@ -113,4 +113,22 @@ describe("Auth User Use Case", () => {
       await sut.exec(data);
     }).rejects.toThrow("E-mail e senha são obrigatórios");
   });
+
+  it("Should throws if user is not active", () => {
+    const { sut } = makeSut();
+
+    expect(async () => {
+      const data = { email: "any_email", password: "any_password" };
+
+      findUserByEmailRepositoryMock.findUserByEmail.mockResolvedValueOnce({
+        isActive: false,
+      } as User);
+
+      passwordComparerMock.compare.mockReturnValueOnce(true);
+
+      await sut.exec(data);
+    }).rejects.toThrow(
+      "É necessário que o usuário esteja ativo para realizar login"
+    );
+  });
 });

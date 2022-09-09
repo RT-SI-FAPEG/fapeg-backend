@@ -35,6 +35,11 @@ export class AuthUserUseCase {
     if (!this.props.passwordComparer.compare(password, user.password))
       throw new AppError("E-mail ou senha inválidos");
 
+    if (!user.isActive)
+      throw new AppError(
+        "É necessário que o usuário esteja ativo para realizar login"
+      );
+
     const token = this.props.jwtCreator.create({
       exp: "1d",
       sub: user.id,

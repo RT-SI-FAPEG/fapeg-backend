@@ -13,6 +13,7 @@ interface UserDTO {
   educationalInstitution?: string;
   course?: string;
   typePerson: TypePerson;
+  isActive?: boolean;
 }
 
 interface UserProps {
@@ -26,6 +27,7 @@ interface UserProps {
   educationalInstitution?: string;
   course?: string;
   typePerson: TypePerson;
+  isActive?: boolean;
 }
 
 export class User {
@@ -41,6 +43,7 @@ export class User {
     this.props = {
       ...props,
       id: props.id || randomUUID(),
+      isActive: props.isActive || false,
     };
   }
 
@@ -80,6 +83,10 @@ export class User {
     return this.props.educationalInstitution || "";
   }
 
+  get isActive() {
+    return this.props.isActive || false;
+  }
+
   get course() {
     return this.props.course || "";
   }
@@ -114,6 +121,10 @@ export class User {
 
   set typePerson(typePerson: TypePerson) {
     this.props.typePerson = typePerson;
+  }
+
+  set isActive(isActive: boolean) {
+    this.isActive = isActive;
   }
 
   toJSON() {

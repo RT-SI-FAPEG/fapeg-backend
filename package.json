@@ -6,10 +6,10 @@
   "scripts": {
     "dev": "NODE_ENV=dev ts-node-dev ./src/main/http/express/index.ts",
     "build": "tsc --build",
-    "start": "node ./dist/src/main/http/express/index.js",
+    "start": "node ./dist/main/http/express/index.js",
     "test": "jest --watch",
     "test:cov": "jest --coverage",
-    "typeorm": "typeorm-ts-node-esm",
+    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
     "test:e2e": "jest --"
   },
   "devDependencies": {
