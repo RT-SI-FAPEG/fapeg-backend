@@ -39,5 +39,9 @@ export const UserEntity = new EntitySchema<User>({
       type: String,
       nullable: true,
     },
+    isActive: {
+      type: Boolean,
+      nullable: true,
+    },
   },
 });
