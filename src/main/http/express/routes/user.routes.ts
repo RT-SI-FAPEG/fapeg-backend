@@ -96,9 +96,9 @@ userRoutes.put("/user/password", async (req, res) => {
     resetPasswordUseCase
   );
 
-  const result = await resetPasswordController.handle(req);
+  const { statusCode } = await resetPasswordController.handle(req);
 
-  return res.status(result.statusCode).send("");
+  return res.status(statusCode).send("");
 });
 
 // Update de dados
@@ -116,9 +116,9 @@ userRoutes.put("/user", AuthMiddleware, async (req, res) => {
 
   const updateUserController = new UpdateUserController(updateUserUseCase);
 
-  const result = await updateUserController.handle(req);
+  const { statusCode } = await updateUserController.handle(req);
 
-  return res.status(result.statusCode).send("");
+  return res.status(statusCode).send("");
 });
 
 userRoutes.delete("/user/:id", AuthMiddleware, async (req, res) => {
@@ -149,7 +149,7 @@ userRoutes.post("/user/resend-confirmation-mail", async (req, res) => {
 
 // user/activate - Token - Body
 
-userRoutes.post("user/activate", async (req, res) => {
+userRoutes.post("/user/activate", async (req, res) => {
   const activateAccountUseCase = new ActivateAccountUseCase({
     findUserByIdRepository: userRepository,
     tokenValidator: jwtDecoder,
