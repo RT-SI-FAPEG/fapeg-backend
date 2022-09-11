@@ -118,14 +118,14 @@ export class CreateUserUseCase {
       sub: user.id,
     });
 
-    // this.props.sendMail.sendMail({
-    //   subject: "Account created",
-    //   to: user.email,
-    //   text: createUserMailTemplate({
-    //     token,
-    //     mailAddress: user.email,
-    //     name: user.name,
-    //   }),
-    // });
+    this.props.sendMail.sendMail({
+      subject: "Conta criada",
+      to: user.email,
+      text: createUserMailTemplate({
+        token,
+        mailAddress: user.email,
+        name: user.name,
+      }),
+    });
   }
 }

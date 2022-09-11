@@ -2,6 +2,7 @@ import { Router } from "express";
 import { CreateUserController } from "../../../../adapters/controllers/create-user.controller";
 import { DeleteUserController } from "../../../../adapters/controllers/delete-user.controller";
 import { GetUserDataController } from "../../../../adapters/controllers/get-user-data.controller";
+import { ResendConfirmationMailController } from "../../../../adapters/controllers/resend-confirmation-mail.controller";
 import { ResetPasswordController } from "../../../../adapters/controllers/reset-password.controller";
 import { UpdateUserController } from "../../../../adapters/controllers/update-user.controller";
 import { CPFValidator } from "../../../../infra/cpf-validator";
@@ -17,6 +18,7 @@ import { SendMail } from "../../../../infra/send-mail";
 import { CreateUserUseCase } from "../../../../usecases/interactors/create-user/create-user.usecase";
 import { DeleteUserUseCase } from "../../../../usecases/interactors/delete-user/delete-user.usecase";
 import { GetUserDataUseCase } from "../../../../usecases/interactors/get-user-data/get-user-data.usecase";
+import { ResendConfirmationMailUseCase } from "../../../../usecases/interactors/resend-confirmation-mail/resend-confirmation-mail.usecase";
 import { ResetPasswordUseCase } from "../../../../usecases/interactors/reset-password/reset-password.usecase";
 import { UpdateUserUseCase } from "../../../../usecases/interactors/update-user/update-user.usecase";
 import { AuthMiddleware } from "../middlewares/AuthMiddleware";
@@ -126,3 +128,21 @@ userRoutes.delete("/user/:id", AuthMiddleware, async (req, res) => {
   const result = await deleteUserController.handle(req);
   return res.status(result.statusCode).send("");
 });
+
+userRoutes.post("/user/resend-confirmation-mail", async (req, res) => {
+  const resendConfirmationMailUseCase = new ResendConfirmationMailUseCase({
+    findUserByIdRepository: userRepository,
+    sendMail,
+    tokenGenerator: jwtCreator,
+  });
+
+  const resendConfirmationMailController = new ResendConfirmationMailController(
+    resendConfirmationMailUseCase
+  );
+
+  const result = await resendConfirmationMailController.handle(req);
+
+  return res.status(result.statusCode).send("");
+});
+
+// user/activate - Token - Body
