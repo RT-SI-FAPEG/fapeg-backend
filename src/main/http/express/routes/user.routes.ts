@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { ActivateAccountController } from "../../../../adapters/controllers/activate-account.controller";
 import { CreateUserController } from "../../../../adapters/controllers/create-user.controller";
 import { DeleteUserController } from "../../../../adapters/controllers/delete-user.controller";
 import { GetUserDataController } from "../../../../adapters/controllers/get-user-data.controller";
@@ -15,6 +16,7 @@ import { PasswordHasher } from "../../../../infra/password-hasher";
 import { PasswordValidator } from "../../../../infra/password-validator";
 import { UserRepositoryTypeorm } from "../../../../infra/repositories/typeorm/user-typeorm.repository";
 import { SendMail } from "../../../../infra/send-mail";
+import { ActivateAccountUseCase } from "../../../../usecases/interactors/activate-account/activate-account.usecase";
 import { CreateUserUseCase } from "../../../../usecases/interactors/create-user/create-user.usecase";
 import { DeleteUserUseCase } from "../../../../usecases/interactors/delete-user/delete-user.usecase";
 import { GetUserDataUseCase } from "../../../../usecases/interactors/get-user-data/get-user-data.usecase";
@@ -125,8 +127,8 @@ userRoutes.delete("/user/:id", AuthMiddleware, async (req, res) => {
     findUserByIdRepository: userRepository,
   });
   const deleteUserController = new DeleteUserController(deleteUserUseCase);
-  const result = await deleteUserController.handle(req);
-  return res.status(result.statusCode).send("");
+  const { statusCode } = await deleteUserController.handle(req);
+  return res.status(statusCode).send("");
 });
 
 userRoutes.post("/user/resend-confirmation-mail", async (req, res) => {
@@ -146,3 +148,19 @@ userRoutes.post("/user/resend-confirmation-mail", async (req, res) => {
 });
 
 // user/activate - Token - Body
+
+userRoutes.post("user/activate", async (req, res) => {
+  const activateAccountUseCase = new ActivateAccountUseCase({
+    findUserByIdRepository: userRepository,
+    tokenValidator: jwtDecoder,
+    updateUserRepository: userRepository,
+  });
+
+  const activateAccontController = new ActivateAccountController(
+    activateAccountUseCase
+  );
+
+  const { statusCode } = await activateAccontController.handle(req);
+
+  return res.status(statusCode).send("");
+});
