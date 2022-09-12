@@ -5,8 +5,7 @@ export class ResetPasswordController {
   constructor(private resetPasswordUseCase: ResetPasswordUseCase) {}
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
-    const { newPassword } = request.body;
-    const { token } = request.headers;
+    const { newPassword, token } = request.body;
 
     await this.resetPasswordUseCase.exec({ newPassword, token });
 

@@ -1,4 +1,5 @@
 import { AppError } from "../../../shared/errors/AppError";
+import { contactUsTemplate } from "../../../shared/utils/mail-templates/contact-use.template";
 import { ISendMail } from "../../ports/send-mail";
 import { IEmailValidator } from "../../ports/user-validator";
 
@@ -26,8 +27,12 @@ export class ContactUsUseCase {
 
     this.props.sendMail.sendMail({
       subject: data.subject,
-      text: data.text,
-      to: data.email,
+      text: contactUsTemplate({
+        mailAddress: data.email,
+        message: data.text,
+        subject: data.subject,
+      }),
+      to: process.env.MAIL_ADDRESS || "",
     });
   }
 }
