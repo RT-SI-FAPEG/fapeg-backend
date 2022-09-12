@@ -38,7 +38,7 @@ export class ResetPasswordUseCase {
       throw new AppError("Nova senha possui formato inválido");
 
     // verificar se o token não está expirado
-    const { exp, sub } = this.props.jwtDecoder.decode(token);
+    const { sub } = this.props.jwtDecoder.decode(token);
 
     // verificar se o usuário existe
     const user = await this.props.findUserByIdRepository.findUserById(sub);

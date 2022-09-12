@@ -5,6 +5,7 @@ import { DeleteUserController } from "../../../../adapters/controllers/delete-us
 import { GetUserDataController } from "../../../../adapters/controllers/get-user-data.controller";
 import { ResendConfirmationMailController } from "../../../../adapters/controllers/resend-confirmation-mail.controller";
 import { ResetPasswordController } from "../../../../adapters/controllers/reset-password.controller";
+import { SendResetPasswordMailController } from "../../../../adapters/controllers/send-reset-password-mail.controller";
 import { UpdateUserController } from "../../../../adapters/controllers/update-user.controller";
 import { CPFValidator } from "../../../../infra/cpf-validator";
 import { DateValidator } from "../../../../infra/date-validator";
@@ -22,6 +23,7 @@ import { DeleteUserUseCase } from "../../../../usecases/interactors/delete-user/
 import { GetUserDataUseCase } from "../../../../usecases/interactors/get-user-data/get-user-data.usecase";
 import { ResendConfirmationMailUseCase } from "../../../../usecases/interactors/resend-confirmation-mail/resend-confirmation-mail.usecase";
 import { ResetPasswordUseCase } from "../../../../usecases/interactors/reset-password/reset-password.usecase";
+import { SendResetPasswordMailUseCase } from "../../../../usecases/interactors/send-reset-password-mail/send-reset-password-mail.usecase";
 import { UpdateUserUseCase } from "../../../../usecases/interactors/update-user/update-user.usecase";
 import { AuthMiddleware } from "../middlewares/AuthMiddleware";
 
@@ -142,9 +144,25 @@ userRoutes.post("/user/resend-confirmation-mail", async (req, res) => {
     resendConfirmationMailUseCase
   );
 
-  const result = await resendConfirmationMailController.handle(req);
+  const { statusCode } = await resendConfirmationMailController.handle(req);
 
-  return res.status(result.statusCode).send("");
+  return res.status(statusCode).send("");
+});
+
+userRoutes.post("/user/send-reset-password-mail", async (req, res) => {
+  const sendResetPasswordMailUseCase = new SendResetPasswordMailUseCase({
+    sendMail,
+    findUserByIdRepository: userRepository,
+    tokenGenerator: jwtCreator,
+  });
+
+  const sendResetPasswordMailController = new SendResetPasswordMailController(
+    sendResetPasswordMailUseCase
+  );
+
+  const { statusCode } = await sendResetPasswordMailController.handle(req);
+
+  return res.status(statusCode).send("");
 });
 
 // user/activate - Token - Body
