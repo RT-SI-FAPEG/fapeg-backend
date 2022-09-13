@@ -45,3 +45,45 @@ Segue um exemplo da hierarquia das camadas, da esquerda para a direita, temos as
     - `npm run start` ou `yarn start` para executar a aplicação em ambiente de produção;
     - `npm run test` ou `yarn test` para executar os testes da aplicação;
     - `npm run test:cov` ou `yarn test:cov` para executar os testes da aplicação com cobertura de testes (exibição visual dos testes porcentagem do código que foi testado).
+
+* Para execução somente em ambiente de desenvolvimento (localmente):
+    - Instalar as dependências
+    - Executar o script de dev (`npm run dev` ou `yarn dev`)
+
+* Para execução em ambiente de produção:
+    - Instalar as dependências
+    - Executar o script de build (`npm run build` ou `yarn build`)
+    - Executar o script de start (`npm run start` ou `yarn start`)
+
+* Observação:
+    Periodicamente executar o comando `npm run typeorm migration:run -d ./src/database` ou `yarn typeorm migration:run -d ./src/database` para executar as alterações no esquema de bancos de dados da aplicação.
+
+## Próximos passos
+
+* Implementar chat entre pesquisadores para troca de informações
+    Para essa atividade, sugerimos a utilização de ou Socket.io ou alguma ferramenta já pronta, como Firebase.
+
+* Indicadores de forma dinâmica
+    Para esta atividade, será necessário o acesso ao banco de dados da FAPEG, onde os dados deverão ser tratados e exibidos sob demanda.
+
+* Gráficos
+    Exibir gráficos de indicadores de forma dinâmica, segue basicamente a mesma ideia da sugestão anterior.
+
+* Pesquisas de forma dinâmica
+    Assim como as duas sugestões anteriores, esta diz respeito às pesquisas e cases de sucesso dinâmicos na aplicação. Atualmente utilizamos arquivos .json estáticos para exibição dessas pesquisas. Será necessário implementar acessos aos bancos de dados da FAPEG para que possamos exibir de forma dinâmica as pesquisas e casos de sucesso.
+
+* Monitoração da aplicação
+    Utilizar de alguma ferramenta para monitorar o acesso à aplicação.
+    Recomendamos a utilização de Grafana ou ferramenta similar para acompanhamento da aplicação.
+    Além disso, recomendamos que a aplicação seja executada com a utilização de algum service manager, como o `pm2`.
+
+* Criação de banco de dados da aplicação
+    Por ainda estarmos em fase de testes e homologação, o banco de dados utilizado está sendo o Sqlite (Arquivo de banco de dados simples).
+    Posteriormente para ambiente produtivo será necessário a utilização de um banco de dados mais robusto. Para isso, recomendamos a utilização de MySql ou Postgres.
+
+* Criação de ambiente produtivo para a aplicação
+    O ambiente já foi criado por parte da FAPEG, agora basta que a aplicação seja instalada e monitorada.
+
+
+
+
