@@ -115,6 +115,7 @@ export class UpdateUserUseCase {
       course,
       educationLevel,
       educationalInstitution,
+      isActive: user.isActive,
     });
 
     const updatedUser = await this.props.updateUserRepository.updateUser(
